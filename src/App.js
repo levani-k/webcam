@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef } from 'react'
+import Webcam from 'react-webcam'
+import { isMobile } from 'react-device-detect'
+import {
+  Wrapper,
+  WebcamWrapper,
+  StyledCaptureButton,
+  StyledImg,
+} from './AppStyles'
 
-function App() {
+
+const App = () => {
+  const width = isMobile ? 150 : 400
+  console.log('isMobile: ', isMobile)
+  const webcamRef = useRef(null)
+  const videoConstraints = { width, height: width, facingMode: 'environment' }
+  const [error, setCameraError] = useState(null)
+  const [ imgSrc, setImgSrc ] = useState('')
+  const handleCapturePic = async () => {
+    const imageSrc = webcamRef.current.getScreenshot()
+    setImgSrc(imageSrc)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+      <WebcamWrapper>
+      <Webcam
+        ref={webcamRef}
+        audio={false}
+        mirrored={isMobile ? false : true}
+        screenshotFormat='image/jpeg'
+        videoConstraints={videoConstraints}
+        onUserMediaError={(err) => setCameraError(err)}
+        screenshotQuality={0.5}
+        minScreenshotHeight={1200}
+        minScreenshotWidth={1200}
+      />
+      <StyledImg src={imgSrc} width={width}/>
+      </WebcamWrapper>
+      <StyledCaptureButton onClick={handleCapturePic}>Capture</StyledCaptureButton>
+    </Wrapper>
   );
 }
-
 export default App;
