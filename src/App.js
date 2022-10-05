@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import Webcam from 'react-webcam'
 import { isMobile } from 'react-device-detect'
+import { resetOrientation } from './utils'
 import {
   Wrapper,
   WebcamWrapper,
@@ -18,7 +19,9 @@ const App = () => {
   const [ imgSrc, setImgSrc ] = useState('')
   const handleCapturePic = async () => {
     const imageSrc = webcamRef.current.getScreenshot()
-    setImgSrc(imageSrc)
+    const orientation = window.isMobile ? 1 : 2
+    const image = await resetOrientation(imageSrc, orientation)
+    setImgSrc(image)
   }
   return (
     <Wrapper>
