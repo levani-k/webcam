@@ -17,12 +17,17 @@ export const WebcamWrapper = styled.div`
   gap: 32px;
 `
 
+export const Example = styled.div`
+  width: ${(p) => p.width }px;
+  height: auto;
+`
+
 export const StyledCaptureButton = styled.button`
   padding: 8px;
   font-size: 16px;
 `
 
 export const StyledImg = styled.img`
-  width: ${(width) => width };
+  width: ${(p) => p.width }px;
   height: auto;
 `
